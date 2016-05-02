@@ -1,6 +1,6 @@
 class GroveError(Exception):
- def __init__(self,*args,**kwargs):
- Exception.__init__(self,*args,**kwargs)
+    def __init__(self,*args,**kwargs):
+        Exception.__init__(self,*args,**kwargs)
 
 ## Parse tree nodes for the Grove language
 
@@ -47,6 +47,10 @@ class Addition(Expr):
 class StringLiteral(Expr):
     def __init__(self,str):
         self.str = str
+
+        if not str.isalnum():
+            raise GroveError("GROVE: expected string but received "+ str + ". Make sure string is alphanumeric")
+
     def eval(self):
         return self.str
         
@@ -84,23 +88,3 @@ class Stmt:
     def eval(self):
         var_table[self.name.getName()] = self.expr.eval()
         
-
-# some testing code
-if __name__ == "__main__":
-    assert(Num(3).eval() == 3)
-    assert(Addition(Num(3), Num(10)).eval() == 13)
-    assert(Subtraction(Num(3), Num(10)).eval() == -7)
-    
-    caught_error = False
-    try:
-        print(Name("nope").eval())
-    except ValueError:
-        caught_error = True
-    assert(caught_error)
-    
-    assert(Stmt(Name("foo"), Num(10)).eval() is None)
-    assert(Name("foo").eval() == 10)
-    
-    # Try something more complicated
-    assert(Stmt(Name("foo"), Addition(Num(200), Subtraction(Num(4), Num(12)))).eval() is None)
-    assert(Name("foo").eval() == 192)
