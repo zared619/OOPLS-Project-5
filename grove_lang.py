@@ -21,6 +21,9 @@ class Addition(Expr):
     def __init__(self, child1, child2):
         self.child1 = child1
         self.child2 = child2
+        
+        if type(self.child1) != type(self.child2):
+            raise GroveError("GROVE: the type " +str(type(self.child1)) + " does not match the type "+str(type(self.child2)))
 
         if not isinstance(self.child1, Expr):
             raise ValueError("CALC: expected expression but received " + str(type(self.child1)))
@@ -48,6 +51,12 @@ class Method(Expr):
 class Name(Expr):
     def __init__(self, name):
         self.name = name
+        
+        #PROJECT 5 CHANGES
+        if not (self.name[:1].isalpha() or "_" in self.name[:1]):
+            raise GroveError("GROVE: Must start with alphabetic characters or underscore")
+        if not (self.name[1:].isalnum() or "_" in self.name[:1]):
+            raise GroveError("GROVE: Must only contain alphanumeric characters or underscore")
 
     def getName(self):
         return self.name
