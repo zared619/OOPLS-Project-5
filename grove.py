@@ -12,4 +12,6 @@ if __name__ == "__main__":
     while True:
         choice = input("Grove>>")
         root = parse(choice)
-        #print(root)
+        evaluation = root.eval()
+        if isinstance(evaluation, Expr):
+            print(evaluation)
