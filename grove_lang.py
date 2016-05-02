@@ -64,6 +64,12 @@ class Method(Expr):
 class Name(Expr):
     def __init__(self, name):
         self.name = name
+        
+        #PROJECT 5 CHANGES
+        if not (self.name[:1].isalpha() or "_" in self.name[:1]):
+            raise GroveError("GROVE: Must start with alphabetic characters or underscore")
+        if not (self.name[1:].isalnum() or "_" in self.name[:1]):
+            raise GroveError("GROVE: Must only contain alphanumeric characters or underscore")
 
     def getName(self):
         return self.name
