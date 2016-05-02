@@ -22,6 +22,9 @@ class Addition(Expr):
         self.child1 = child1
         self.child2 = child2
 
+        if type(self.child1) != type(self.child2):
+            raise GroveError("GROVE: the type " +str(type(self.child1)) + " does not match the type "+str(type(self.child2)))
+   
         if not isinstance(self.child1, Expr):
             raise ValueError("CALC: expected expression but received " + str(type(self.child1)))
         if not isinstance(self.child2, Expr):
@@ -86,21 +89,21 @@ class Stmt:
         
 
 # some testing code
-if __name__ == "__main__":
-    assert(Num(3).eval() == 3)
-    assert(Addition(Num(3), Num(10)).eval() == 13)
-    assert(Subtraction(Num(3), Num(10)).eval() == -7)
+# if __name__ == "__main__":
+#     assert(Num(3).eval() == 3)
+#     assert(Addition(Num(3), Num(10)).eval() == 13)
+#     assert(Subtraction(Num(3), Num(10)).eval() == -7)
     
-    caught_error = False
-    try:
-        print(Name("nope").eval())
-    except ValueError:
-        caught_error = True
-    assert(caught_error)
+#     caught_error = False
+#     try:
+#         print(Name("nope").eval())
+#     except ValueError:
+#         caught_error = True
+#     assert(caught_error)
     
-    assert(Stmt(Name("foo"), Num(10)).eval() is None)
-    assert(Name("foo").eval() == 10)
+#     assert(Stmt(Name("foo"), Num(10)).eval() is None)
+#     assert(Name("foo").eval() == 10)
     
-    # Try something more complicated
-    assert(Stmt(Name("foo"), Addition(Num(200), Subtraction(Num(4), Num(12)))).eval() is None)
-    assert(Name("foo").eval() == 192)
+#     # Try something more complicated
+#     assert(Stmt(Name("foo"), Addition(Num(200), Subtraction(Num(4), Num(12)))).eval() is None)
+#     assert(Name("foo").eval() == 192)
