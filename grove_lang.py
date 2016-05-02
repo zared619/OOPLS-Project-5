@@ -38,15 +38,23 @@ class StringLiteral(Expr):
         self.str = str
 
         for char in str:
-            if not char.isalphanum() or not char == ".":
+            if not char.isalphanum() and not char == "." and not char == "\"":
                 raise GroveError("GROVE: expected string but received " + str)
 
     def eval(self):
         return self.str
         
 class Method(Expr):
-    def __init__(self):
-        pass
+    def __init__(self, objName, methName, args):
+        self.objName = objName
+        self.methName = methName
+        self.args = args
+
+        if not objName in var_table:
+            raise GroveError("GROVE: expected object name but received " + str(self.objName))
+
+        if not methName in dir(self):
+            raise GroveError("GROVE: expected method but received " + str(self.methName))
         
 class Name(Expr):
     def __init__(self, name):
