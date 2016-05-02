@@ -89,6 +89,9 @@ class Stmt:
             raise ValueError("CALC: expected expression but received " + str(type(self.expr)))
         if not isinstance(self.name, Name):
             raise ValueError("CALC expected expression but received " + str(type(self.expr)))
+        if expr[0] == "exit" or expr[0] == "quit":
+            self.expr = sys.exit()
+        
         #if expr[0] == "+":
         #    self.expr = Addition[1,len(expr)]
         # else:
