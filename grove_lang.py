@@ -21,6 +21,9 @@ class Addition(Expr):
     def __init__(self, child1, child2):
         self.child1 = child1
         self.child2 = child2
+        
+        if type(self.child1) != type(self.child2):
+            raise GroveError("GROVE: the type " +str(type(self.child1)) + " does not match the type "+str(type(self.child2)))
 
         if not isinstance(self.child1, Expr):
             raise ValueError("CALC: expected expression but received " + str(type(self.child1)))
