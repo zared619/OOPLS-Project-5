@@ -1,0 +1,18 @@
+
+exec(open("grove_parse.py").read())
+
+root = parse('set s = "hello"')
+evaluation = root.eval()
+root = parse('set s_cap = call ( s upper )')
+evaluation = root.eval()
+root = parse('s_cap')
+evaluation = root.eval()
+print(evaluation)
+root = parse('call ( s find "e" )')
+evaluation = root.eval()
+print(evaluation)
+root = parse('s')
+evaluation = root.eval()
+print(evaluation)
+root = parse('exit')
+evaluation = root.eval()

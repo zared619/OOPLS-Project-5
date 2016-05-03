@@ -88,8 +88,12 @@ def parse_tokens(tokens):
         method = tokens[3]
         args = []
         iter = 4
+        #print(tokens)
         while(len(tokens[iter:]) > 1):
-            args += tokens[iter]
+            myToken = tokens[iter]
+            if isinstance(myToken, str):
+                myToken = myToken.replace("\"","")
+            args.append(myToken)
             iter += 1
         expect(tokens[iter], ")")
         check(len(tokens) > 1)

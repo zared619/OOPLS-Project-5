@@ -72,7 +72,9 @@ class Method(Expr):
         if len(self.args) == 0:
             return fcn()
         else:
-            return fcn(self.args)
+            #print(self.args)
+            #print(*self.args)
+            return fcn(*self.args)
 
 class Name(Expr):
     def __init__(self, name):
