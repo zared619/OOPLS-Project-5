@@ -62,6 +62,12 @@ def parse_tokens(tokens):
         # else:
         #     return (Subtraction(child1, child2), tokens[1:])
 
+    elif start in ["\""]:
+        (child, tokens) = parse_tokens(tokens[1:])
+        check(len(tokens) == 1)
+        expect(tokens[0] == "\"")
+        return StringLiteral(child)
+
     elif start == "set":
         (varname, tokens) = parse_tokens(tokens[1:])
         #print(tokens)
