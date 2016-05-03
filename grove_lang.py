@@ -19,6 +19,14 @@ class Num(Expr):
     def eval(self):
         return self.value
         
+class NewObject(Expr):
+    def __init__(self, value):
+        self.value = value
+
+    def eval(self):
+        print("EVAL: "+str(eval(self.value)) )
+        return eval(self.value) 
+        
 class Addition(Expr):
     def __init__(self, child1, child2):
         self.child1 = child1
@@ -83,7 +91,9 @@ class Stmt:
         self.expr = expr
 
         #print(name.eval())
-        if not isinstance(self.expr, Expr):
+        if isinstance(self.expr, NewObject):
+            pass
+        elif not isinstance(self.expr, Expr):
             raise ValueError("CALC: expected expression but received " + str(type(self.expr)))
         elif not isinstance(self.name, Name):
             raise ValueError("CALC expected expression but received " + str(type(self.expr)))
@@ -96,7 +106,13 @@ class Stmt:
         #     self.expr = Subtraction[1, len(expr)]
 
     def eval(self):
-        var_table[self.name.getName()] = self.expr.eval()
+        if isinstance(self.expr,NewObject):
+            print("NewObject")
+            var_table[self.name.getName()] = self.expr.eval()
+            pass
+        else:
+            print("EH")
+            var_table[self.name.getName()] = self.expr.eval()
 
 class ImportModule(Stmt):
     def __init__(self, name, expr):
