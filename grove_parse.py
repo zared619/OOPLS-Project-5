@@ -62,6 +62,12 @@ def parse_tokens(tokens):
         # else:
         #     return (Subtraction(child1, child2), tokens[1:])
 
+    elif "\"" in start:
+        (child, tokens) = parse_tokens(tokens[1:])
+        check(len(tokens) == 1)
+        expect(tokens[0] == "\"")
+        return StringLiteral(child)
+
     elif start == "set":
         (varname, tokens) = parse_tokens(tokens[1:])
         #print(tokens)
@@ -71,7 +77,7 @@ def parse_tokens(tokens):
     elif start == "import":
         (varname, tokens) = parse_tokens(tokens[1:])
         expect(len(tokens),0)#tokens should be empty now
-        return (Stmt(ImportModule(varname), ImportModule(varname)), tokens[1:])
+        return ImportModule(varname, varname), tokens[1:]
     elif start == "new":
         print(str(tokens))
         
