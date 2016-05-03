@@ -73,18 +73,27 @@ def parse_tokens(tokens):
         expect(len(tokens),0)#tokens should be empty now
         return (Stmt(ImportModule(varname), ImportModule(varname)), tokens[1:])
     elif start == "new":
-        (varname, tokens) = parse_tokens(tokens[1:])
-
-        expect(len(tokens),0)
+        print(str(tokens))
         
-        #(child, tokens) = parse_tokens(tokens[1:])
+        splitTokens = tokens[1].split(".")
         
-        return (Stmt(varname, child), tokens)
+        print (splitTokens)        
+        
+        (varname, splitTokens) = parse_tokens(splitTokens)
+        
+        if len(splitTokens) > 1:
+            expect(splitTokens[1], ".")
+            (child, splitTokens) = parse_tokens(splitTokens[1:])
+            return (NewObject(varname.getName()+"."+child.getName()), splitTokens[1:])
+        else:
+            return (NewObject(varname.getName()), splitTokens[1:])
+        
+       # 
+        return (NewObject(varname.getName()), tokens[1:])
     elif start == "exit" or start == "quit":
         return (Stmt(StringLiteral(start), StringLiteral(start)), tokens[1:])
     else:
         #check(start[:1].isalpha(), "Variable names must be alphabetic.")
-        
         #Name checks itself for isalpha/isnumeric
         return (Name(start), tokens[1:])
 
