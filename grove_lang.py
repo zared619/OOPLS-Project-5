@@ -84,7 +84,7 @@ class Stmt:
         self.exit = False
         
         #print(name.eval())
-        if name.eval() == "exit" or name.eval() == "quit":
+        if isinstance(self.name,StringLiteral) and (name.eval() == "exit" or name.eval() == "quit"):
             #print("Is set to exit")
             self.exit = True
         elif not isinstance(self.expr, Expr):
