@@ -64,6 +64,7 @@ def parse_tokens(tokens):
 
     elif start == "set":
         (varname, tokens) = parse_tokens(tokens[1:])
+        print(tokens)
         expect(tokens[0], "=")
         (child, tokens) = parse_tokens(tokens[1:])
         return (Stmt(varname, child), tokens)
