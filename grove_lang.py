@@ -6,7 +6,7 @@ class GroveError(Exception):
 
 ## Parse tree nodes for the Grove language
 
-var_table = { 'exit':1,'quit':1 }
+var_table = { }
 
 class Expr:
     pass
@@ -65,7 +65,7 @@ class Name(Expr):
         #PROJECT 5 CHANGES
         if not (self.name[:1].isalpha() or "_" in self.name[:1]):
             raise GroveError("GROVE: Must start with alphabetic characters or underscore")
-        if not (self.name[1:].isalnum() or "_" in self.name[:1]):
+        if len(self.name[1:]) > 0 and not (self.name[1:].isalnum() or "_" in self.name[:1]):
             raise GroveError("GROVE: Must only contain alphanumeric characters or underscore")
 
     def getName(self):
