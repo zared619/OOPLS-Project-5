@@ -34,34 +34,29 @@ class Addition(Expr):
 
     def eval(self):
         return self.child1.eval() + self.child2.eval()
-        
-## Subtraction is not used for Project 5
-# class Subtraction(Expr):
-#     def __init__(self, child1, child2):
-#         self.child1 = child1
-#         self.child2 = child2
 
-#         if not isinstance(self.child1, Expr):
-#             raise ValueError("CALC: expected expression but received " + str(type(self.child1)))
-#         if not isinstance(self.child2, Expr):
-#             raise ValueError("CALC: expected expression but received " + str(type(self.child2)))
-
-#     def eval(self):
-#         return self.child1.eval() - self.child2.eval()
-        
 class StringLiteral(Expr):
     def __init__(self,str):
         self.str = str
 
-        if not str.isalnum():
-            raise GroveError("GROVE: expected string but received "+ str + ". Make sure string is alphanumeric")
+        for char in str:
+            if not char.isalphanum() and not char == "." and not char == "\"":
+                raise GroveError("GROVE: expected string but received " + str)
 
     def eval(self):
         return self.str
         
 class Method(Expr):
-    def __init__(self):
-        pass
+    def __init__(self, objName, methName, args):
+        self.objName = objName
+        self.methName = methName
+        self.args = args
+
+        if not objName in var_table:
+            raise GroveError("GROVE: expected object name but received " + str(self.objName))
+
+        if not methName in dir(self):
+            raise GroveError("GROVE: expected method but received " + str(self.methName))
         
 class Name(Expr):
     def __init__(self, name):
@@ -108,4 +103,3 @@ class Stmt:
         if self.exit:
             sys.exit()
         var_table[self.name.getName()] = self.expr.eval()
-        
