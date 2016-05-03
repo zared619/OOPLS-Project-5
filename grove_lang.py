@@ -67,11 +67,8 @@ class Method(Expr):
             raise GroveError("GROVE: expected method but received " + str(self.methName))
 
     def eval(self):
-        #print(var_table)
         obj = var_table[self.objName]
-        #print(obj)
         fcn = getattr(obj, self.methName)
-        #print(self.args)
         if len(self.args) == 0:
             return fcn()
         else:

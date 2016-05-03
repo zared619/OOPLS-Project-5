@@ -65,6 +65,8 @@ def parse_tokens(tokens):
     elif "\"" in start[0]:
         varname = tokens[0]
         check(varname.count("\"") == 2,"Should contain exactly two quotation marks")
+        varname = varname.replace("\"","")
+        
         return (StringLiteral(varname),tokens[1:])
 
     elif start == "set":
