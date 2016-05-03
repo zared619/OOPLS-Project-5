@@ -10,6 +10,7 @@ exec(open("grove_parse.py").read())
 
 if __name__ == "__main__":
     while True:
+        print(globals())
         choice = input("Grove>>")
         try:
             root = parse(choice)

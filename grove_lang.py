@@ -1,4 +1,5 @@
 import sys
+import importlib
 
 class GroveError(Exception):
     def __init__(self,*args,**kwargs):
@@ -18,6 +19,14 @@ class Num(Expr):
     def eval(self):
         return self.value
 
+class ImportModule(Expr):
+    def __init__(self, value):
+        self.value = value
+
+    def eval(self):
+        importing = importlib.import_module(self.value.getName())
+        globals().update({self.value.getName(): importing})
+        return None
         
 class Addition(Expr):
     def __init__(self, child1, child2):
@@ -40,7 +49,7 @@ class StringLiteral(Expr):
         self.str = str
 
         for char in str:
-            if not char.isalphanum() and not char == "." and not char == "\"":
+            if not char.isalnum() and not char == "." and not char == "\"":
                 raise GroveError("GROVE: expected string but received " + str)
 
     def eval(self):
@@ -87,6 +96,8 @@ class Stmt:
         if isinstance(self.name,StringLiteral) and (name.eval() == "exit" or name.eval() == "quit"):
             #print("Is set to exit")
             self.exit = True
+        elif isinstance(self.expr, ImportModule):
+            pass
         elif not isinstance(self.expr, Expr):
             raise ValueError("CALC: expected expression but received " + str(type(self.expr)))
         elif not isinstance(self.name, Name):
@@ -102,4 +113,7 @@ class Stmt:
     def eval(self):
         if self.exit:
             sys.exit()
-        var_table[self.name.getName()] = self.expr.eval()
+        if isinstance(self.expr,ImportModule):
+            self.expr.eval()
+        else:
+            var_table[self.name.getName()] = self.expr.eval()
