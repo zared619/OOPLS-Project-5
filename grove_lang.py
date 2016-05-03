@@ -63,9 +63,13 @@ class Method(Expr):
         if not objName in var_table:
             raise GroveError("GROVE: expected object name but received " + str(self.objName))
 
-        if not methName in dir(self):
+        if not methName in dir(self.objName):
             raise GroveError("GROVE: expected method but received " + str(self.methName))
-        
+
+    def eval(self):
+        obj = self.objName in var_table
+        return getattr(obj, self.methName, self.args)
+
 class Name(Expr):
     def __init__(self, name):
         self.name = name

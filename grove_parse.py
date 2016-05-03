@@ -84,10 +84,14 @@ def parse_tokens(tokens):
         if not child in var_table:
             raise GroveError("GROVE: variable does not exist. Received " + str(child))
         method = tokens[3]
-        (child2, tokens) = parse_tokens(tokens[4:])
+        args = []
+        iter = 4
+        while(len(tokens[iter:]) > 1):
+            args += tokens[iter]
+            iter += 1
+        expect(tokens[iter], ")")
         check(len(tokens) > 1)
-        expect(tokens[0], ")")
-        return (Method(child, method, child2),tokens[1:])
+        return (Method(child, method, args),tokens[iter+1:])
     elif start == "new":
         #print(str(tokens))
         
