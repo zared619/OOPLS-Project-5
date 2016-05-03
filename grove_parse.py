@@ -77,6 +77,17 @@ def parse_tokens(tokens):
         (varname, tokens) = parse_tokens(tokens[1:])
         expect(len(tokens),0)#tokens should be empty now
         return ImportModule(varname, varname), tokens[1:]
+
+    elif start == "call":
+        expect(tokens[1], "(")
+        child = tokens[2]
+        if not child in var_table:
+            raise GroveError("GROVE: variable does not exist. Received " + str(child))
+        method = tokens[3]
+        (child2, tokens) = parse_tokens(tokens[4:])
+        check(len(tokens) > 1)
+        expect(tokens[0], ")")
+        return (Method(child, method, child2),tokens[1:])
     elif start == "new":
         #print(str(tokens))
         
@@ -143,3 +154,22 @@ def parse_tokens(tokens):
 #             check(False, "Did not catch an error that we should have caught")
 #         except ValueError:
 #             pass
+
+if __name__ == "__main__":
+    while True:
+        #print(globals())
+        #print(var_table)
+        #print()
+        choice = input("Grove>>")
+        try:
+            root = parse(choice)
+            evaluation = root.eval()
+            #print(evaluation)
+            if evaluation != None:
+                print(evaluation)
+        except GroveError as e:
+            print(e)
+        except ValueError as e:
+            print(e)
+        except NameError as e:
+            print(e)
