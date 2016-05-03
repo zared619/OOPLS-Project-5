@@ -62,11 +62,10 @@ def parse_tokens(tokens):
         # else:
         #     return (Subtraction(child1, child2), tokens[1:])
 
-    elif "\"" in start:
-        (child, tokens) = parse_tokens(tokens[1:])
-        check(len(tokens) == 1)
-        expect(tokens[0] == "\"")
-        return StringLiteral(child)
+    elif "\"" in start[0]:
+        varname = tokens[0]
+        check(varname.count("\"") == 2,"Can only contain two quotation marks")
+        return (StringLiteral(varname),tokens[1:])
 
     elif start == "set":
         (varname, tokens) = parse_tokens(tokens[1:])
@@ -82,20 +81,18 @@ def parse_tokens(tokens):
         #print(str(tokens))
         
         splitTokens = tokens[1].split(".")
-        
-        #print (splitTokens)        
-        
         (varname, splitTokens) = parse_tokens(splitTokens)
         
-        if len(splitTokens) > 1:
-            expect(splitTokens[1], ".")
-            (child, splitTokens) = parse_tokens(splitTokens[1:])
+        if len(splitTokens) > 0:
+            #print(splitTokens)
+            (child, splitTokens) = parse_tokens(splitTokens)
+            #print(splitTokens)
             return (NewObject(varname.getName()+"."+child.getName()), splitTokens[1:])
         else:
             return (NewObject(varname.getName()), splitTokens[1:])
         
        # 
-        return (NewObject(varname.getName()), tokens[1:])
+        #return (NewObject(varname.getName()), tokens[1:])
     elif start == "exit" or start == "quit":
         return Exit(start, start), tokens[1:]
     else:

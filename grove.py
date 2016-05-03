@@ -10,9 +10,9 @@ exec(open("grove_parse.py").read())
 
 if __name__ == "__main__":
     while True:
-        print(globals())
+        #print(globals())
         #print(var_table)
-        print()
+        #print()
         choice = input("Grove>>")
         try:
             root = parse(choice)
@@ -23,4 +23,6 @@ if __name__ == "__main__":
         except GroveError as e:
             print(e)
         except ValueError as e:
+            print(e)
+        except NameError as e:
             print(e)

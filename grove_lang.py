@@ -24,7 +24,7 @@ class NewObject(Expr):
         self.value = value
 
     def eval(self):
-        print("EVAL: "+str(eval(self.value)) )
+        #print("EVAL: "+str(eval(self.value)) )
         return eval(self.value) 
         
 class Addition(Expr):
@@ -107,11 +107,9 @@ class Stmt:
 
     def eval(self):
         if isinstance(self.expr,NewObject):
-            print("NewObject")
             var_table[self.name.getName()] = self.expr.eval()
             pass
         else:
-            print("EH")
             var_table[self.name.getName()] = self.expr.eval()
 
 class ImportModule(Stmt):
@@ -125,6 +123,14 @@ class ImportModule(Stmt):
         return None
 
 class Exit(Stmt):
+    def __init__(self, name, expr):
+        self.name = name
+        self.expr = expr
+
+    def eval(self):
+        sys.exit()
+
+class New(Stmt):
     def __init__(self, name, expr):
         self.name = name
         self.expr = expr
