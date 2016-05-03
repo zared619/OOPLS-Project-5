@@ -68,6 +68,10 @@ def parse_tokens(tokens):
         expect(tokens[0], "=")
         (child, tokens) = parse_tokens(tokens[1:])
         return (Stmt(varname, child), tokens)
+    elif start == "import":
+        (varname, tokens) = parse_tokens(tokens[1:])
+        expect(len(tokens),0)#tokens should be empty now
+        return (Stmt(ImportModule(varname), ImportModule(varname)), tokens[1:])
     elif start == "exit" or start == "quit":
         return (Stmt(StringLiteral(start), StringLiteral(start)), tokens[1:])
     else:
