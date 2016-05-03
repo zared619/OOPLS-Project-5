@@ -10,8 +10,9 @@ exec(open("grove_parse.py").read())
 
 if __name__ == "__main__":
     while True:
-        #print(globals())
-        print(var_table)
+        print(globals())
+        #print(var_table)
+        print()
         choice = input("Grove>>")
         try:
             root = parse(choice)

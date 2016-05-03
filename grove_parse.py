@@ -79,11 +79,11 @@ def parse_tokens(tokens):
         expect(len(tokens),0)#tokens should be empty now
         return ImportModule(varname, varname), tokens[1:]
     elif start == "new":
-        print(str(tokens))
+        #print(str(tokens))
         
         splitTokens = tokens[1].split(".")
         
-        print (splitTokens)        
+        #print (splitTokens)        
         
         (varname, splitTokens) = parse_tokens(splitTokens)
         
