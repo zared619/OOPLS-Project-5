@@ -40,7 +40,7 @@ class StringLiteral(Expr):
         self.str = str
 
         for char in str:
-            if not char.isalphanum() and not char == "." and not char == "\"":
+            if not char.isalnum() and not char == "." and not char == "\"":
                 raise GroveError("GROVE: expected string but received " + str)
 
     def eval(self):
