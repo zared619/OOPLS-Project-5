@@ -1,10 +1,12 @@
+import sys
+
 class GroveError(Exception):
     def __init__(self,*args,**kwargs):
         Exception.__init__(self,*args,**kwargs)
 
 ## Parse tree nodes for the Grove language
 
-var_table = {}
+var_table = { 'exit':1,'quit':1 }
 
 class Expr:
     pass
@@ -79,13 +81,18 @@ class Stmt:
     def __init__(self, name, expr):
         self.name = name
         self.expr = expr
-
-        if not isinstance(self.expr, Expr):
+        self.exit = False
+        
+        #print(name.eval())
+        if name.eval() == "exit" or name.eval() == "quit":
+            #print("Is set to exit")
+            self.exit = True
+        elif not isinstance(self.expr, Expr):
             raise ValueError("CALC: expected expression but received " + str(type(self.expr)))
-        if not isinstance(self.name, Name):
+        elif not isinstance(self.name, Name):
             raise ValueError("CALC expected expression but received " + str(type(self.expr)))
-        if expr[0] == "exit" or expr[0] == "quit":
-            self.expr = sys.exit()
+        #print(expr)
+        
         
         #if expr[0] == "+":
         #    self.expr = Addition[1,len(expr)]
@@ -93,4 +100,6 @@ class Stmt:
         #     self.expr = Subtraction[1, len(expr)]
 
     def eval(self):
+        if self.exit:
+            sys.exit()
         var_table[self.name.getName()] = self.expr.eval()

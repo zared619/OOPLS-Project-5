@@ -28,7 +28,8 @@ def parse(s):
         Throws ValueError for improper syntax """
     # TODO
     (root, remainingTokens) = parse_tokens(s.split())
-    #print("TEST")
+    #print(str(type(root)))
+    #print("Remaining Tokens: "+remainingTokens)
     #The parse call should have used all the tokens
     check(len(remainingTokens) == 0, "Expected end of command but found '"+ " ".join(remainingTokens)+ "'")
 
@@ -66,7 +67,8 @@ def parse_tokens(tokens):
         expect(tokens[0], "=")
         (child, tokens) = parse_tokens(tokens[1:])
         return (Stmt(varname, child), tokens)
-    
+    elif start == "exit" or start == "quit":
+        return (Stmt(StringLiteral(start), StringLiteral(start)), tokens[1:])
     else:
         #check(start[:1].isalpha(), "Variable names must be alphabetic.")
         
