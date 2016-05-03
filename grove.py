@@ -4,6 +4,17 @@ OOPLS
 Zared Hollabaugh
 Caelan Mayberry
 Stuart Bowman
+
+Is your Grove interpreter using a static or dynamic type system? Briefly explain what aspects of the
+interpreter make it so.
+
+    Dynamic. Types can be defined and changed at runtime, meaning that types are not rigidly set at compile time
+    and can be changed. For example, the user can run \
+        set X1 = 5
+        and then later run
+        set X1 = "hi"
+
+
 '''
 
 exec(open("grove_parse.py").read())
