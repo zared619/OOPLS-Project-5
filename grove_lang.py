@@ -81,13 +81,9 @@ class Stmt:
     def __init__(self, name, expr):
         self.name = name
         self.expr = expr
-        self.exit = False
-        
+
         #print(name.eval())
-        if isinstance(self.name,StringLiteral) and (name.eval() == "exit" or name.eval() == "quit"):
-            #print("Is set to exit")
-            self.exit = True
-        elif not isinstance(self.expr, Expr):
+        if not isinstance(self.expr, Expr):
             raise ValueError("CALC: expected expression but received " + str(type(self.expr)))
         elif not isinstance(self.name, Name):
             raise ValueError("CALC expected expression but received " + str(type(self.expr)))
@@ -100,10 +96,7 @@ class Stmt:
         #     self.expr = Subtraction[1, len(expr)]
 
     def eval(self):
-        if self.exit:
-            sys.exit()
-        else:
-            var_table[self.name.getName()] = self.expr.eval()
+        var_table[self.name.getName()] = self.expr.eval()
 
 class ImportModule(Stmt):
     def __init__(self, name, expr):
@@ -114,3 +107,11 @@ class ImportModule(Stmt):
         importing = importlib.import_module(self.expr.getName())
         globals().update({self.expr.getName(): importing})
         return None
+
+class Exit(Stmt):
+    def __init__(self, name, expr):
+        self.name = name
+        self.expr = expr
+
+    def eval(self):
+        sys.exit()
