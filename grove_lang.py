@@ -71,9 +71,11 @@ class Name(Expr):
         self.name = name
         
         #PROJECT 5 CHANGES
+        #print(self.name[:1])
+        
         if not (self.name[:1].isalpha() or "_" in self.name[:1]):
             raise GroveError("GROVE: Must start with alphabetic characters or underscore")
-        if len(self.name[1:]) > 0 and not (self.name[1:].isalnum() or "_" in self.name[:1]):
+        if len(self.name[1:]) > 0 and not (self.name[1:].isalnum() or "_" in self.name[1:]):
             raise GroveError("GROVE: Must only contain alphanumeric characters or underscore")
 
     def getName(self):

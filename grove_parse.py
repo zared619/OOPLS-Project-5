@@ -107,6 +107,7 @@ def parse_tokens(tokens):
     elif start == "exit" or start == "quit":
         return Exit(start, start), tokens[1:]
     else:
+        #print(start)
         #check(start[:1].isalpha(), "Variable names must be alphabetic.")
         #Name checks itself for isalpha/isnumeric
         return (Name(start), tokens[1:])
@@ -155,21 +156,21 @@ def parse_tokens(tokens):
 #         except ValueError:
 #             pass
 
-if __name__ == "__main__":
-    while True:
-        #print(globals())
-        #print(var_table)
-        #print()
-        choice = input("Grove>>")
-        try:
-            root = parse(choice)
-            evaluation = root.eval()
-            #print(evaluation)
-            if evaluation != None:
-                print(evaluation)
-        except GroveError as e:
-            print(e)
-        except ValueError as e:
-            print(e)
-        except NameError as e:
-            print(e)
+# if __name__ == "__main__":
+#     while True:
+#         #print(globals())
+#         #print(var_table)
+#         #print()
+#         choice = input("Grove>>")
+#         try:
+#             root = parse(choice)
+#             evaluation = root.eval()
+#             #print(evaluation)
+#             if evaluation != None:
+#                 print(evaluation)
+#         except GroveError as e:
+#             print(e)
+#         except ValueError as e:
+#             print(e)
+#         except NameError as e:
+#             print(e)
