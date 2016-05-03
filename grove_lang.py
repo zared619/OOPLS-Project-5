@@ -24,7 +24,9 @@ class ImportModule(Expr):
         self.value = value
 
     def eval(self):
-        return importlib.import_module(self.value.getName())
+        importing = importlib.import_module(self.value.getName())
+        globals().update({self.value.getName(): importing})
+        return None
         
 class Addition(Expr):
     def __init__(self, child1, child2):
