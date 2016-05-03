@@ -62,7 +62,7 @@ def parse_tokens(tokens):
         # else:
         #     return (Subtraction(child1, child2), tokens[1:])
 
-    elif start in ["\""]:
+    elif "\"" in start:
         (child, tokens) = parse_tokens(tokens[1:])
         check(len(tokens) == 1)
         expect(tokens[0] == "\"")
@@ -137,3 +137,18 @@ def parse_tokens(tokens):
 #             check(False, "Did not catch an error that we should have caught")
 #         except ValueError:
 #             pass
+
+if __name__ == "__main__":
+    while True:
+        print(globals())
+        choice = input("Grove>>")
+        try:
+            root = parse(choice)
+            evaluation = root.eval()
+            #print(evaluation)
+            if evaluation != None:
+                print(evaluation)
+        except GroveError as e:
+            print(e)
+        except ValueError as e:
+            print(e)
