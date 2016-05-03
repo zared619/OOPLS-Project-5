@@ -97,7 +97,7 @@ def parse_tokens(tokens):
        # 
         return (NewObject(varname.getName()), tokens[1:])
     elif start == "exit" or start == "quit":
-        return (Stmt(StringLiteral(start), StringLiteral(start)), tokens[1:])
+        return Exit(start, start), tokens[1:]
     else:
         #check(start[:1].isalpha(), "Variable names must be alphabetic.")
         #Name checks itself for isalpha/isnumeric
