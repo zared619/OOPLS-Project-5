@@ -14,7 +14,8 @@ if __name__ == "__main__":
         try:
             root = parse(choice)
             evaluation = root.eval()
-            if isinstance(evaluation, Expr):
+            #print(evaluation)
+            if evaluation != None:
                 print(evaluation)
         except GroveError as e:
             print(e)
