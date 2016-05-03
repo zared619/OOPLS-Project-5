@@ -77,7 +77,7 @@ def parse_tokens(tokens):
     elif start == "import":
         (varname, tokens) = parse_tokens(tokens[1:])
         expect(len(tokens),0)#tokens should be empty now
-        return (Stmt(ImportModule(varname), ImportModule(varname)), tokens[1:])
+        return ImportModule(varname, varname), tokens[1:]
     elif start == "new":
         (varname, tokens) = parse_tokens(tokens[1:])
 
@@ -137,18 +137,3 @@ def parse_tokens(tokens):
 #             check(False, "Did not catch an error that we should have caught")
 #         except ValueError:
 #             pass
-
-if __name__ == "__main__":
-    while True:
-        print(globals())
-        choice = input("Grove>>")
-        try:
-            root = parse(choice)
-            evaluation = root.eval()
-            #print(evaluation)
-            if evaluation != None:
-                print(evaluation)
-        except GroveError as e:
-            print(e)
-        except ValueError as e:
-            print(e)

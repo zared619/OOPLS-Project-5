@@ -18,15 +18,6 @@ class Num(Expr):
 
     def eval(self):
         return self.value
-
-class ImportModule(Expr):
-    def __init__(self, value):
-        self.value = value
-
-    def eval(self):
-        importing = importlib.import_module(self.value.getName())
-        globals().update({self.value.getName(): importing})
-        return None
         
 class Addition(Expr):
     def __init__(self, child1, child2):
@@ -96,8 +87,6 @@ class Stmt:
         if isinstance(self.name,StringLiteral) and (name.eval() == "exit" or name.eval() == "quit"):
             #print("Is set to exit")
             self.exit = True
-        elif isinstance(self.expr, ImportModule):
-            pass
         elif not isinstance(self.expr, Expr):
             raise ValueError("CALC: expected expression but received " + str(type(self.expr)))
         elif not isinstance(self.name, Name):
@@ -113,7 +102,15 @@ class Stmt:
     def eval(self):
         if self.exit:
             sys.exit()
-        if isinstance(self.expr,ImportModule):
-            self.expr.eval()
         else:
             var_table[self.name.getName()] = self.expr.eval()
+
+class ImportModule(Stmt):
+    def __init__(self, name, expr):
+        self.name = name
+        self.expr = expr
+
+    def eval(self):
+        importing = importlib.import_module(self.expr.getName())
+        globals().update({self.expr.getName(): importing})
+        return None
