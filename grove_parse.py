@@ -95,6 +95,19 @@ def parse_tokens(tokens):
                 myToken = myToken.replace("\"","")
             args.append(myToken)
             iter += 1
+
+        if "call" in args:
+            args = parse_tokens(args)
+
+        argIter = 0
+        argList = list(args)
+        for arg in args:
+            if isinstance(arg,Method):
+                argList[argIter] = arg.eval()
+            if arg == list():
+                argList.remove(list())
+            argIter += 1
+
         expect(tokens[iter], ")")
         check(len(tokens) > 1)
         return (Method(child, method, args),tokens[iter+1:])
@@ -184,3 +197,22 @@ def parse_tokens(tokens):
 #             print(e)
 #         except NameError as e:
 #             print(e)
+
+if __name__ == "__main__":
+    while True:
+        #print(globals())
+        #print(var_table)
+        #print()
+        choice = input("Grove>>")
+        try:
+            root = parse(choice)
+            evaluation = root.eval()
+            #print(evaluation)
+            if evaluation != None:
+                print(evaluation)
+        except GroveError as e:
+            print(e)
+        except ValueError as e:
+            print(e)
+        except NameError as e:
+            print(e)
