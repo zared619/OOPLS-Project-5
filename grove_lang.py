@@ -24,7 +24,6 @@ class NewObject(Expr):
         self.value = value
 
     def eval(self):
-        #print("EVAL: "+str(eval(self.value)) )
         return eval(self.value) 
         
 class Addition(Expr):
@@ -63,7 +62,8 @@ class Method(Expr):
         if not objName in var_table:
             raise GroveError("GROVE: expected object name but received " + str(self.objName))
 
-        if not methName in dir(self.objName):
+        if not methName in dir(var_table[self.objName]):
+            print(dir(var_table[self.objName]))
             raise GroveError("GROVE: expected method but received " + str(self.methName))
 
     def eval(self):
@@ -72,8 +72,6 @@ class Method(Expr):
         if len(self.args) == 0:
             return fcn()
         else:
-            #print(self.args)
-            #print(*self.args)
             return fcn(*self.args)
 
 class Name(Expr):
@@ -81,7 +79,6 @@ class Name(Expr):
         self.name = name
         
         #PROJECT 5 CHANGES
-        #print(self.name[:1])
         
         if not (self.name[:1].isalpha() or "_" in self.name[:1]):
             raise GroveError("GROVE: Must start with alphabetic characters or underscore")
@@ -102,20 +99,12 @@ class Stmt:
         self.name = name
         self.expr = expr
 
-        #print(name.eval())
         if isinstance(self.expr, NewObject):
             pass
         elif not isinstance(self.expr, Expr):
             raise ValueError("CALC: expected expression but received " + str(type(self.expr)))
         elif not isinstance(self.name, Name):
             raise ValueError("CALC expected expression but received " + str(type(self.expr)))
-        #print(expr)
-        
-        
-        #if expr[0] == "+":
-        #    self.expr = Addition[1,len(expr)]
-        # else:
-        #     self.expr = Subtraction[1, len(expr)]
 
     def eval(self):
         if isinstance(self.expr,NewObject):

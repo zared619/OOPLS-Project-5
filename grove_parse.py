@@ -28,8 +28,7 @@ def parse(s):
         Throws ValueError for improper syntax """
     # TODO
     (root, remainingTokens) = parse_tokens(s.split())
-    #print(str(type(root)))
-    #print("Remaining Tokens: "+remainingTokens)
+
     #The parse call should have used all the tokens
     check(len(remainingTokens) == 0, "Expected end of command but found '"+ " ".join(remainingTokens)+ "'")
 
@@ -71,7 +70,6 @@ def parse_tokens(tokens):
 
     elif start == "set":
         (varname, tokens) = parse_tokens(tokens[1:])
-        #print(tokens)
         expect(tokens[0], "=")
         (child, tokens) = parse_tokens(tokens[1:])
         return (Stmt(varname, child), tokens)
@@ -87,8 +85,8 @@ def parse_tokens(tokens):
             raise GroveError("GROVE: variable does not exist. Received " + str(child))
         method = tokens[3]
         args = []
+        #start at the fourth spot because that's where the args will start
         iter = 4
-        #print(tokens)
         while(len(tokens[iter:]) > 1):
             myToken = tokens[iter]
             if isinstance(myToken, str):
@@ -96,6 +94,7 @@ def parse_tokens(tokens):
             args.append(myToken)
             iter += 1
 
+        #This is a failed attempt to handle if there's an addition in the arguments
         if "+" in args:
             expect(tokens[1], "(")
             (child1, args) = parse_tokens(args[2:])
@@ -113,11 +112,14 @@ def parse_tokens(tokens):
         if start == "+":
             return (Addition(child1, child2), tokens[1:])
 
+        #This handles if there's a call in the arguments
         if "call" in args:
             args = parse_tokens(args)
 
         argIter = 0
         argList = list(args)
+
+        #This will evaluate the method and put it in the argList
         for arg in args:
             if isinstance(arg,Method):
                 argList[argIter] = arg.eval()
@@ -130,43 +132,35 @@ def parse_tokens(tokens):
         expect(tokens[iter], ")")
         check(len(tokens) > 1)
         return (Method(child, method, argList),tokens[iter+1:])
+
     elif start == "new":
-        #print(str(tokens))
-        
         splitTokens = tokens[1].split(".")
         (varname, splitTokens) = parse_tokens(splitTokens)
         
         if len(splitTokens) > 0:
-            #print(splitTokens)
             (child, splitTokens) = parse_tokens(splitTokens)
-            #print(splitTokens)
             return (NewObject(varname.getName()+"."+child.getName()), splitTokens[1:])
         else:
             return (NewObject(varname.getName()), splitTokens[1:])
-        
-       # 
-        #return (NewObject(varname.getName()), tokens[1:])
+
     elif start == "exit" or start == "quit":
         return Exit(start, start), tokens[1:]
+
     else:
-        #print(start)
-        #check(start[:1].isalpha(), "Variable names must be alphabetic.")
         #Name checks itself for isalpha/isnumeric
         return (Name(start), tokens[1:])
 
 
 if __name__ == "__main__":
     while True:
-        #print(globals())
-        #print(var_table)
-        #print()
         choice = input("Grove>>")
         try:
             root = parse(choice)
             evaluation = root.eval()
-            #print(evaluation)
+
             if evaluation != None:
                 print(evaluation)
+                
         except GroveError as e:
             print(e)
         except ValueError as e:
