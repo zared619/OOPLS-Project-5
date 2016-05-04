@@ -160,7 +160,7 @@ if __name__ == "__main__":
 
             if evaluation != None:
                 print(evaluation)
-                
+
         except GroveError as e:
             print(e)
         except ValueError as e:

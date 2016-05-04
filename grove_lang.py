@@ -72,6 +72,7 @@ class Method(Expr):
         if len(self.args) == 0:
             return fcn()
         else:
+            #This seems to return the right thing, but causes failures for mutliple tests.
             return fcn(*self.args)
 
 class Name(Expr):
